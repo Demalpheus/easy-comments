@@ -1,3 +1,4 @@
+local inline = require("easy-comments.inline")
 local M = {}
 
 function M.insert_comment_at_cursor()
@@ -10,14 +11,14 @@ function M.insert_comment_at_cursor()
     row = row - 1
     -- col = col - 1
     -- Detect file language
-    --
+    local filetype = vim.bo.filetype
     -- change to insert mode
     --
     -- insert comment text at beginning of line
-    local c = '-- '
+    local c = inline[filetype]
     -- buffer, start row, start col, end row, end col, text
     vim.api.nvim_buf_set_text(0, row, col, row, col, { c })
-    -- move cursor appropriately and change to inser mode
+    -- move cursor appropriately and change to insert mode
     vim.api.nvim_win_set_cursor(0, {row+1, col+3})
     vim.cmd('startinsert')
 end
@@ -26,7 +27,8 @@ function M.comment_line()
     local pos = vim.api.nvim_win_get_cursor(0)
     local row, col = unpack(pos)
     row = row - 1
-    local c = '-- '
+    local filetype = vim.bo.filetype
+    local c = inline[filetype]
     vim.api.nvim_buf_set_text(0, row, 0, row, 0, { c })
 end
 
