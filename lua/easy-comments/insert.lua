@@ -4,7 +4,6 @@ local M = {}
 function M.insert_comment_at_cursor()
     -- Get cursor position
     local pos = vim.api.nvim_win_get_cursor(0)
-    local luaversion = _VERSION
     -- Neovim currently uses Lua 5.1 so use unpack isntead of table.unpack
     local row, col = unpack(pos)
     -- update varialbes to 0-indexed values
