@@ -18,7 +18,8 @@ function M.insert_comment_at_cursor()
     -- buffer, start row, start col, end row, end col, text
     vim.api.nvim_buf_set_text(0, row, col, row, col, { c })
     -- move cursor appropriately and change to insert mode
-    vim.api.nvim_win_set_cursor(0, {row+1, col+3})
+    local c_length = string.len(c)
+    vim.api.nvim_win_set_cursor(0, {row+1, col+c_length})
     vim.cmd('startinsert')
 end
 
@@ -36,7 +37,9 @@ function M.uncomment_line()
     local row, col = unpack(pos)
     row = row - 1
     -- col = col - 1
-
+    local filetype = vim.bo.filetype
+    local c = inline[filetype]
+    local c_length = string.len(c)
     -- Get the current line
     local linetext = vim.api.nvim_buf_get_lines(0, row, row+1, false)
     local str = linetext[1]
@@ -51,7 +54,7 @@ function M.uncomment_line()
         -- return cursor to original position
         if c_start < col then
             -- Comment is before the cursor
-            col = col - 3
+            col = col - c_length 
         end
         vim.api.nvim_win_set_cursor(0, {row+1, col})
     end
