@@ -34,7 +34,7 @@ function M.uncomment_line()
     local pos = vim.api.nvim_win_get_cursor(0)
     local row, col = unpack(pos)
     row = row - 1
-    col = col - 1
+    -- col = col - 1
 
     -- Get the current line
     local linetext = vim.api.nvim_buf_get_lines(0, row, row+1, false)
@@ -42,12 +42,17 @@ function M.uncomment_line()
     local c_pattern = "%-%- "
     local has_comment = string.match(str, c_pattern)
     if has_comment ~= nil then
+        -- Find location of existing comment
+        local c_start = string.find(str, c_pattern)
         local newstr = string.gsub(str, "%-%- ", "", 1)
         vim.api.nvim_buf_set_lines(0, row, row+1, false, { })
         vim.api.nvim_buf_set_lines(0, row, row, false, { newstr })
         -- return cursor to original position
-        -- TODO - detect if the cursor is before or after a comment to ensure correct placement
-        vim.api.nvim_win_set_cursor(0, {row+1, col-2})
+        if c_start < col then
+            -- Comment is before the cursor
+            col = col - 3
+        end
+        vim.api.nvim_win_set_cursor(0, {row+1, col})
     end
 end
 
