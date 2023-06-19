@@ -17,6 +17,9 @@ function M.insert_comment_at_cursor()
     local c = '-- '
     -- buffer, start row, start col, end row, end col, text
     vim.api.nvim_buf_set_text(0, row, col, row, col, { c })
+    -- move cursor appropriately and change to inser mode
+    vim.api.nvim_win_set_cursor(0, {row+1, col+3})
+    vim.cmd('startinsert')
 end
 
 function M.comment_line()
@@ -43,6 +46,7 @@ function M.uncomment_line()
         vim.api.nvim_buf_set_lines(0, row, row+1, false, { })
         vim.api.nvim_buf_set_lines(0, row, row, false, { newstr })
         -- return cursor to original position
+        -- TODO - detect if the cursor is before or after a comment to ensure correct placement
         vim.api.nvim_win_set_cursor(0, {row+1, col-2})
     end
 end
