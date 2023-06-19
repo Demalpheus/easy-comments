@@ -1,7 +1,7 @@
 local M = {
+    js  = "// ",
     lua = "-- ",
     py  = "# ",
-    js  = "// ",
 }
 
 return M
