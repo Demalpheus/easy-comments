@@ -2,7 +2,7 @@
 " Description:  A plugin to easily add comments to files
 " Last Change:  3 June 2023
 " Maintainer:   Travis Weddle <https://github.com/demalpheus>
-echo "Loading Easy Comments"
+" echo "Loading Easy Comments"
 " if exists("g:loaded_easycomments")
     " finish
 " endif
